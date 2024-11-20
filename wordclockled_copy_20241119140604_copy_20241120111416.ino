@@ -5,56 +5,79 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 #define DELAYVAL 50
 
 
-int h;  //hours
-int m;  //mins
+int hours;    //hours
+int minutes;  //mins
 
-int clockWords[24][2] = {
-  { 0, 1 },    // it
-  { 2, 3 },    // is
-  { 4, 7 },    // half
-  { 19, 28 },  // twenty five
-  { 19, 24 },  // twenty
-  { 9, 15 },   // quarter
-  { 16, 18 },  // ten (in minutes)
-  { 25, 28 },  // five
-  { 29, 32 },  // past
-  { 32, 33 },  // to
-  { 34, 36 },  // one
-  { 37, 39 },  // two
-  { 40, 44 },  // three
-  { 45, 48 },  // four
-  { 49, 52 },  // five
-  { 53, 55 },  // six
-  { 56, 60 },  // seven
-  { 61, 65 },  // eight
-  { 66, 69 },  // nine
-  { 81, 83 },  // ten
-  { 75, 80 },  // eleven
-  { 70, 75 },  // twelve
-  { 84, 89 }   // o'clock
-}
+int hourWords[12][2] = {
+  { 34, 37 },  // one
+  { 37, 40 },  // two
+  { 40, 45 },  // three
+  { 45, 49 },  // four
+  { 49, 53 },  // five
+  { 53, 56 },  // six
+  { 56, 61 },  // seven
+  { 61, 66 },  // eight
+  { 66, 70 },  // nine
+  { 81, 84 },  // ten
+  { 75, 81 },  // eleven
+  { 70, 76 },  // twelve
+};
 
-void
-setup() {
+int minuteWords[12][2] = {
+  { 0, 0 },    // zero
+  { 25, 29 },  // five
+  { 16, 19 },  // ten (in minutes)
+  { 8, 16 },   // a quarter
+  { 19, 25 },  // twenty
+  { 19, 29 },  // twenty five
+  { 4, 8 },    // half
+  { 19, 29 },  // twenty five
+  { 19, 25 },  // twenty
+  { 8, 16 },   // a quarter
+  { 16, 19 },  // ten (in minutes)
+  { 25, 29 },  // five
+};
 
+/*{ 29, 33 },  // past
+  { 32, 34 },  // to*/
+
+void setup() {
   pixels.begin();  // INITIALIZE NeoPixel strip object (REQUIRED)
 }
 
 void loop() {
   pixels.clear();
+  // IT IS (below)
   pixels.setPixelColor(0, pixels.Color(50, 0, 50));
   pixels.setPixelColor(1, pixels.Color(50, 0, 50));
   pixels.setPixelColor(2, pixels.Color(50, 0, 50));
   pixels.setPixelColor(3, pixels.Color(50, 0, 50));
+  //O'CLOCK (below)
+  pixels.setPixelColor(84, pixels.Color(50, 0, 50));
+  pixels.setPixelColor(85, pixels.Color(50, 0, 50));
+  pixels.setPixelColor(86, pixels.Color(50, 0, 50));
+  pixels.setPixelColor(87, pixels.Color(50, 0, 50));
+  pixels.setPixelColor(88, pixels.Color(50, 0, 50));
+  pixels.setPixelColor(89, pixels.Color(50, 0, 50));
   pixels.show();
 
-  for (int x = clockWords[h - 1][0]; x < clockWords[h - 1][1], x++) {
+
+  hours = 1;
+  minutes = 48;
+  int counter = minutes / 5;
+  for (int y = minuteWords[counter][0]; y < minuteWords[counter][1]; y++) {
+    pixels.setPixelColor(y, pixels.Color(50, 0, 50));
+    if (counter > 6) hours = hours + 1;
+  }
+  pixels.show();
+
+  for (int x = hourWords[hours - 1][0]; x < hourWords[hours - 1][1]; x++) {
     pixels.setPixelColor(x, pixels.Color(50, 0, 50));
   }
   pixels.show();
 
 
-  h = 1;
+  /*
   switch (h) {
     case 1:
       for (int i = 34; i < 37; i++) {
@@ -130,8 +153,6 @@ void loop() {
       break;
   }
 
-
-  m = 0;
   switch (m) {
     case 5:
       for (int i = 25; i < 29; i++) {
@@ -253,5 +274,5 @@ void loop() {
         pixels.show();
       }
       break;
-  }
+  }*/
 }
